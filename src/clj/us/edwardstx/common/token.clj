@@ -20,7 +20,7 @@
 (defn get-token [token]
   (let [sst (keys/create-self-signed-token (:keys token))]
     (d/chain (http/post (str (-> token :env :auth-host)
-                             "api/service/"
+                             "/api/service/"
                              (-> token :env :service-name)
                              "/token")
                         {:body sst})

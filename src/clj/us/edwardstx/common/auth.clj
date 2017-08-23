@@ -3,7 +3,8 @@
             [byte-streams :as bs]
             [com.stuartsierra.component :as component]
             [clj-crypto.core :as crypto]
-            ))
+
+            [manifold.deferred :as d]))
 
 
 (defrecord Auth [public-key env]
@@ -13,14 +14,17 @@
     (assoc this :public-key
            (crypto/private-key-map {:algorithm "ECDSA"
                                     :bytes
-                                    (-> env
-                                        :auth-host
-                                        (str "key")
-                                        http/get
-                                        deref
-                                        :body
-                                        bs/to-string
-                                        crypto/decode-base64)})))
+                                    (let [url (-> env :auth-host (str "/key"))]
+                                      (-> url
+                                          http/get
+                                          (d/catch (fn [e]
+                                                     (throw
+                                                      (Exception.
+                                                       (str "Unable to get auth key from " url " status: " (:status e))))))
+                                          deref
+                                          :body
+                                          bs/to-string
+                                          crypto/decode-base64))})))
 
   (stop [this]
     (assoc this :public-key nil)))

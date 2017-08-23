@@ -1,37 +1,34 @@
 (ns us.edwardstx.conf.management-ui.handler
-  (:require ;; [compojure.core :refer [GET defroutes]]
-            [compojure.route :refer [not-found resources]]
-            [hiccup.page :refer [include-js include-css html5]]
-            [us.edwardstx.conf.management-ui.middleware :refer [wrap-middleware]]
-            [config.core :refer [env]]))
+  (:require [com.stuartsierra.component :as component]
+            [us.edwardstx.conf.management-ui.orchestrator :as orchestrator]
+            [clojure.data.json :as json]
+            [manifold.deferred :as d]
+            [yada.yada :as yada]))
 
-(def mount-target
-  [:div#app
-      [:h3 "ClojureScript has not been compiled!"]
-      [:p "please run "
-       [:b "lein figwheel"]
-       " in order to start the compiler"]])
+(defn build-routes [o]
+  ["/management-ui"
+   [["/api"
+     [["/v1"
+       [["/keys"
+         (yada/resource {:methods
+                         {:get
+                          {:produces "application/json"
+                           :response (fn [ctx] (d/chain (orchestrator/get-keys o) json/write-str))
+                                }}})]]]
+      ]]
+    ]])
 
-(defn head []
-  [:head
-   [:meta {:charset "utf-8"}]
-   [:meta {:name "viewport"
-           :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+(defrecord Handler [orchestrator routes]
+  component/Lifecycle
 
-(defn loading-page []
-  (html5
-    (head)
-    [:body {:class "body-container"}
-     mount-target
-     (include-js "/js/app.js")]))
+  (start [this]
+    (assoc this :routes (build-routes orchestrator)))
+
+  (stop [this]
+    (assoc this :routes nil)))
 
 
-;;(defroutes routes
-;;  (GET "/" [] (loading-page))
-;;  (GET "/about" [] (loading-page))
-  
-;;  (resources "/")
-;;  (not-found "Not Found"))
-
-;;(def app (wrap-middleware #'routes))
+(defn new-handler []
+  (component/using
+   (map->Handler {})
+   [:orchestrator]))

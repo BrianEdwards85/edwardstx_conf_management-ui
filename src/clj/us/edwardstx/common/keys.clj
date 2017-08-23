@@ -14,7 +14,7 @@
 (def exp-interval (atom (time/days 1)))
 
 (defn get-auth-key [host]
-  (d/chain (http/get (str host "key"))
+  (d/chain (http/get (str host "/key"))
            #(:body %)
            bs/to-string
            crypto/decode-base64

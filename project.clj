@@ -12,7 +12,6 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/core.async "0.3.443"]
 
-
                  [aleph "0.4.3"]
                  [yada "1.2.6"]
                  [ring/ring-core "1.6.2"]
@@ -26,7 +25,6 @@
                  [hikari-cp "1.7.5"]
                  [org.postgresql/postgresql "9.4.1208.jre7"]
                  [com.layerware/hugsql "0.4.7"]
-                 ;;[yesql "0.5.3"]
 
                  [buddy "1.2.0"]
                  [one-time "0.2.0"]

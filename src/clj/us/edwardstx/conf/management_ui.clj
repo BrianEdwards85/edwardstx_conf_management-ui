@@ -1,6 +1,9 @@
 (ns us.edwardstx.conf.management-ui
   (:require [config.core :refer [env]]
             [com.stuartsierra.component :as component]
+            [us.edwardstx.conf.management-ui.orchestrator :refer [new-orchestrator]]
+            [us.edwardstx.conf.management-ui.handler :refer [new-handler]]
+            [us.edwardstx.conf.management-ui.server :refer [new-server]]
             [us.edwardstx.common.conf :refer [new-conf]]
             [us.edwardstx.common.token :refer [new-token]]
             [us.edwardstx.common.keys :refer [new-keys]]
@@ -15,7 +18,10 @@
    :keys (new-keys env)
    :token (new-token env)
    :conf (new-conf env)
-   :database (new-database)
+   :db (new-database)
+   :orchestrator (new-orchestrator)
+   :handler (new-handler)
+   :server (new-server)
    ))
 
 (defn -main [& args]

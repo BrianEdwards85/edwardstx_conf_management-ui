@@ -1,0 +1,65 @@
+(ns us.edwardstx.conf.management-ui.handler
+  (:require [yada.yada :refer [handler resource] :as yada]
+            [hiccup.page :refer [include-js include-css html5]]
+            [us.edwardstx.conf.management-ui.middleware :refer [wrap-middleware]]
+            [config.core :refer [env]]))
+
+(def mount-target
+  [:div#app
+      [:h3 "ClojureScript has not been compiled!"]
+      [:p "please run "
+       [:b "lein figwheel"]
+       " in order to start the compiler"]])
+
+(defn head []
+  [:head
+   [:meta {:charset "utf-8"}]
+   [:meta {:name "viewport"
+           :content "width=device-width, initial-scale=1"}]
+   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+
+(defn loading-page []
+  (html5
+    (head)
+    [:body {:class "body-container"}
+     mount-target
+     (include-js "/js/app.js")]))
+
+(defn GET [& x]
+  (yada/resource {:methods
+                  {:get (apply hash-map x)}}))
+
+(defn routes []
+  ["/management-ui"
+   [["/hello" (yada/handler "Hello World!\n")]
+    ["/echo" (GET :produces "text/plain"
+                  :response (fn [ctx]
+                              (clojure.pprint/pprint ctx)
+                              (assoc (:response ctx)
+                                     :body "Echo"
+                                     :cookies {"nc" {:value "CV"}}
+                                     :headers {"thead" "A H value"})
+                              ))]
+    ["/query" (GET :parameters {:query {:p String}}
+                   :produces "text/plain"
+                   :response (fn [ctx] (format "Hello %s!\n" (-> ctx :parameters :query :p)))
+                )]
+    [["/path/" :id ] (GET :parameters {:path {:id String}}
+                           :produces "text/plain"
+                           :response (fn [ctx] (format "Hello %s!\n" (-> ctx :parameters :path :id)))
+                        )]
+    ["/bueno" (yada/handler "Hello World!\n")]]])
+
+(comment
+  (use 'us.edwardstx.conf.management-ui.handler :reload)
+
+  (in-ns 'us.edwardstx.conf.management-ui.handler)
+
+  (defonce listener (atom nil))
+
+  (reset! listener
+          (yada/listener (routes) {:port 5007}))
+
+  ((:close @listener))
+
+  )
