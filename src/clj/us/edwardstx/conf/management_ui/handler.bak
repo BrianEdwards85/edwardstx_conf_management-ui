@@ -1,4 +1,4 @@
-(ns us.edwardstx.conf.management-ui.handler
+ns us.edwardstx.conf.management-ui.handler
   (:require [yada.yada :refer [handler resource] :as yada]
             [hiccup.page :refer [include-js include-css html5]]
             [us.edwardstx.conf.management-ui.middleware :refer [wrap-middleware]]

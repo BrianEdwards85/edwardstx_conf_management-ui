@@ -1,5 +1,6 @@
 (ns us.edwardstx.common.db
   (:require [hikari-cp.core :refer :all]
+            [clojure.spec.alpha :as s]
             [com.stuartsierra.component :as component]))
 
 (defn create-db-conf [d]
@@ -17,6 +18,8 @@
 
 (defprotocol DBConnection
   (get-connection [this]))
+
+(s/def ::db #(satisfies? DBConnection %))
 
 (defrecord Database [conf datasource]
   component/Lifecycle
