@@ -38,7 +38,7 @@
   (conf/insert-key (:db o) k))
 
 (defn get-value-id [o data]
-  {:pre [(s/valid? (s/keys :req-un [::key (s/or ::conf/id ::value)]))]}
+  {:pre [(s/valid? (s/keys :req-un [::key (or ::conf/id ::value)]))]}
   (if (:id data)
     (d/chain (conf/get-value-by-id (:db o) (:id data))
              #(if (= (:key data) (:key_path %1))

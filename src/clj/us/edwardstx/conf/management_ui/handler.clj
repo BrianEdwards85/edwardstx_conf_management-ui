@@ -2,6 +2,7 @@
   (:require [com.stuartsierra.component :as component]
             [us.edwardstx.conf.management-ui.orchestrator :as orchestrator]
             [us.edwardstx.conf.management-ui.api :as api]
+            [us.edwardstx.conf.management-ui.html :as html]
             [us.edwardstx.common.security :refer [authorized]]
             [clojure.data.json :as json]
             [manifold.deferred :as d]
@@ -10,6 +11,7 @@
 (defn build-routes [o]
   ["/management-ui/" [
                       (api/build-routes o)
+                      (html/build-routes o)
                       ]])
 
 (defrecord Handler [orchestrator routes]

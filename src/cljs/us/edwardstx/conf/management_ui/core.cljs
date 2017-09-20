@@ -1,6 +1,8 @@
 (ns us.edwardstx.conf.management-ui.core
     (:require [reagent.core :as reagent :refer [atom]]
               [secretary.core :as secretary :include-macros true]
+              [re-frame.core :as re-frame]
+              [bidi.bidi :as bidi]
               [accountant.core :as accountant]))
 
 ;; -------------------------
@@ -31,16 +33,30 @@
 ;; -------------------------
 ;; Initialize app
 
-(defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+(def accountant-configuration
+  {:nav-handler
+   (fn [path] (secretary/dispatch! path))
+   :path-exists?
+   (fn [path] (secretary/locate-route path))})
 
-(defn init! []
-  (accountant/configure-navigation!
-    {:nav-handler
-     (fn [path]
-       (secretary/dispatch! path))
-     :path-exists?
-     (fn [path]
-       (secretary/locate-route path))})
+
+(defn ^:export init! []
+  (accountant/configure-navigation! accountant-configuration)
+  (re-frame/dispatch-sync [:initialize])
   (accountant/dispatch-current!)
-  (mount-root))
+  (reagent/render [main-panel] (.getElementById js/document "app")))
+
+(comment 
+  (defn mount-root []
+    (reagent/render [current-page] (.getElementById js/document "app")))
+
+  (defn init! []
+    (accountant/configure-navigation!
+     {:nav-handler
+      (fn [path]
+        (secretary/dispatch! path))
+      :path-exists?
+      (fn [path]
+        (secretary/locate-route path))})
+    (accountant/dispatch-current!)
+    (mount-root)))

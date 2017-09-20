@@ -13,6 +13,7 @@
                  [org.clojure/core.async "0.3.443"]
 
                  [aleph "0.4.3"]
+                 [bidi "2.1.2"]
                  [yada "1.2.6"]
                  [ring/ring-core "1.6.2"]
                  [ring/ring-defaults "0.3.1"]
@@ -113,9 +114,11 @@
    :css-dirs ["resources/public/css"]
    :ring-handler us.edwardstx.conf.management-ui.handler/app}
 
-  :less {:source-paths ["src/less"]
-         :target-path "resources/public/css"}
+;;  :less {:source-paths ["src/less"]
+;;         :target-path "resources/public/css"}
 
+  :sass {:src "src/sass"
+         :dst "resources/public/css"}
 
   :profiles {:dev {:repl-options {:init-ns us.edwardstx.conf.management-ui.repl
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
