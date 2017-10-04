@@ -126,6 +126,7 @@
                    :dependencies [[binaryage/devtools "0.9.4"]
                                   [ring/ring-mock "0.3.1"]
                                   [ring/ring-devel "1.6.1"]
+                                  [re-frisk "0.3.0"]
                                   [prone "1.1.4"]
                                   [figwheel-sidecar "0.5.11"]
                                   [org.clojure/tools.nrepl "0.2.13"]

@@ -50,9 +50,9 @@
   ["" [["assets/js/" (yada/as-resource (io/file "target/cljsbuild/public/js"))
         ]
        ["assets/css/" (yada/as-resource (io/file "resources/public/css/"))]
-       ["" (yada/resource  {:methods {
+       [true (yada/resource  {:methods {
                                      :get {
                                            :produces #{"text/html"}
-                                           :response (authorized o redirect loading-page)
+                                           :response (authorized (:keys o) loading-page redirect)
                                            }
                                      }})]]])

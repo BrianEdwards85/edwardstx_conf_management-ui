@@ -26,35 +26,36 @@
     (orchestrator/set-service-key o b)))
 
 (defn build-v1-routes [o]
-  [["keys"
-    (yada/resource {:methods
-                    {:get {:produces "application/json"
-                           :response (authorized o (partial get-keys o))
-                      }}})]
-   ["services"
-    (yada/resource {:methods
-                    {:get {:produces "application/json"
-                           :response (authorized o (partial get-services o))
-                           }}})]
-   [["services/" :service]
-    (yada/resource {:produces "application/json"
-                    :parameters {:path {:service String}}
-                    :methods
-                    {:get {:response (authorized o (partial get-service-key-values o))
-                           }
-                     :post {:consumes "application/json"
-                            :response (authorized o (partial set-service-key o))}}})]
-   [["keys/" :key]
-    (yada/resource {:methods
-                    {:get {:produces "application/json"
-                           :parameters {:path {:key String}}
-                           :response (authorized o (partial get-key-values o))
-                      }}})]
-   ["echo"
-    (yada/resource {:methods
-                    {:get {:produces "text/plain"
-                           :response (fn [ctx]
-                                                     (clojure.pprint/pprint ctx)
-                                                     (str "UID: " (json/write-str (:jwt ctx))))}
-                     }})]]
+  (let [authorized (partial authorized (:keys o))]
+    [["keys"
+      (yada/resource {:methods
+                      {:get {:produces "application/json"
+                             :response (authorized (partial get-keys o))
+                             }}})]
+     ["services"
+      (yada/resource {:methods
+                      {:get {:produces "application/json"
+                             :response (authorized (partial get-services o))
+                             }}})]
+     [["services/" :service]
+      (yada/resource {:produces "application/json"
+                      :parameters {:path {:service String}}
+                      :methods
+                      {:get {:response (authorized (partial get-service-key-values o))
+                             }
+                       :post {:consumes "application/json"
+                              :response (authorized (partial set-service-key o))}}})]
+     [["keys/" :key]
+      (yada/resource {:methods
+                      {:get {:produces "application/json"
+                             :parameters {:path {:key String}}
+                             :response (authorized (partial get-key-values o))
+                             }}})]
+     ["echo"
+      (yada/resource {:methods
+                      {:get {:produces "text/plain"
+                             :response (fn [ctx]
+                                         (clojure.pprint/pprint ctx)
+                                         (str "UID: " (json/write-str (:jwt ctx))))}
+                       }})]])
   )
