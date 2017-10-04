@@ -5,7 +5,7 @@
             [clojure.spec.alpha :as s]
             [manifold.deferred :as d]))
 
-(hugsql/def-db-fns "us/edwardstx/conf/management_ui/data/sql/conf.sql")
+(hugsql/def-db-fns "sql/conf.sql")
 
 (def key-regex #"^[A-Za-z0-9]+(\.[A-Za-z0-9]+)*$")
 (s/def ::key_path (s/and ::specs/non-empty-string #(re-matches key-regex %)))
