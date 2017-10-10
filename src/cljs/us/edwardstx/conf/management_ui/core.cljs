@@ -5,9 +5,6 @@
               [us.edwardstx.conf.management-ui.views :refer [main-panel]]
               [us.edwardstx.conf.management-ui.routes :as routes]
               [re-frame.core :as re-frame]
-
-              [re-frisk.core :as re-frisk]
-
               [bidi.bidi :as bidi]
               [accountant.core :as accountant]))
 
@@ -21,10 +18,6 @@
      (boolean (bidi/match-route routes path)))})
 
 (defn ^:export init! []
-
-  (enable-console-print!)
-  (re-frisk/enable-re-frisk!)
-
   (reg-handlers)
   (reg-subs)
   (accountant/configure-navigation! (accountant-configuration routes/app-routes))

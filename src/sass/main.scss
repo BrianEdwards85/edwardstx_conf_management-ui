@@ -23,4 +23,29 @@ body {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+    .page {
+        padding: 0px 5px 0px 10px;
+    }
+
+    .tophat {
+        display: flex;
+        flex-direction: row;
+        padding: 5px 5px 3px 5px;
+        border-style: none none solid;
+        border-width: 2px;
+        margin: 1px 1px 5px 1px;
+
+        .title {
+            order: 0;
+            flex: 1 1 auto;
+            font-size: 30px
+        }
+
+        .user {
+            order: 1;
+            flex: 0 1 auto;
+            align-self: center;
+        }
+    }
 }

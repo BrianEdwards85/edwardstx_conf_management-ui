@@ -1,6 +1,7 @@
 (ns us.edwardstx.conf.management-ui
   (:require [config.core :refer [env]]
             [com.stuartsierra.component :as component]
+            [manifold.deferred :as d]
             [us.edwardstx.conf.management-ui.orchestrator :refer [new-orchestrator]]
             [us.edwardstx.conf.management-ui.handler :refer [new-handler]]
             [us.edwardstx.conf.management-ui.server :refer [new-server]]
@@ -25,7 +26,17 @@
    ))
 
 (defn -main [& args]
-  (reset! system (init-system env)))
+  (let [semaphore (d/deferred)]
+    (reset! system (init-system env))
+
+    (swap! system component/start)
+
+    (deref semaphore)
+
+    (component/stop @system)
+
+    (shutdown-agents)
+    ))
 
 
 (comment

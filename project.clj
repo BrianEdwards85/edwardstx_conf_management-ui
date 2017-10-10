@@ -65,7 +65,7 @@
 
   :uberjar-name "management-ui.jar"
 
-  :main us.edwardstx.conf.management-ui.server
+  :main us.edwardstx.conf.management-ui
 
   :clean-targets ^{:protect false}
   [:target-path
@@ -91,8 +91,9 @@
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :figwheel {:on-jsload "us.edwardstx.conf.management-ui.core/mount-root"}
              :compiler
-             {:main "management-ui.dev"
-              :asset-path "/js/out"
+             {
+              :main "us.edwardstx.conf.management-ui.dev"
+              :asset-path "/management-ui/assets/js/out"
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/cljsbuild/public/js/out"
               :source-map true
