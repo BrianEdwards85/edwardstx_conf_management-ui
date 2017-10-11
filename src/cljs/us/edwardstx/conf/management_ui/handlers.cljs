@@ -19,6 +19,20 @@
       {:db init-db})))
 
   (re-frame/reg-event-fx
+   :get-key-values
+   (fn [{:keys [db]} [_ key]]
+     (merge
+      (service/get-key-values key :get-key-values-success :get-failure)
+      {:db (assoc db :key-values nil)})))
+
+  (re-frame/reg-event-db
+   :get-key-values-success
+   (fn [db [_ key r]]
+     (assoc db
+            :key-values r
+            :service-key-edit key)))
+
+  (re-frame/reg-event-fx
    :get-service-keys
    (fn [_ [_ service]]
      (service/get-service-keys service :get-service-keys-success :get-failure)))
@@ -26,7 +40,11 @@
   (re-frame/reg-event-db
    :get-service-keys-success
    (fn [db [_ r]]
-     (assoc db :service-keys r)))
+     (assoc db
+            :service-keys r
+            :key-values nil
+            :service-key-edit nil
+            )))
 
   (re-frame/reg-event-fx
    :get-services

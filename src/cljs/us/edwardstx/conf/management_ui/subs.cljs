@@ -33,5 +33,15 @@
    (fn [db _]
      (:service-keys db)))
 
+  (re-frame/reg-sub
+   :service-key-edit
+   (fn [db _]
+     (:service-key-edit db)))
+
+  (re-frame/reg-sub
+   :key-values
+   (fn [db _]
+     (:key-values db)))
+
   )
 

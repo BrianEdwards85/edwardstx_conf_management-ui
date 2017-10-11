@@ -24,3 +24,9 @@
                 :on-success      [on-success]
                 :on-failure      [on-failure]}})
 
+(defn get-key-values [key on-success on-failure]
+  {:http-xhrio {:method          :get
+                :uri             (str "/management-ui/api/v1/keys/" key)
+                :response-format json
+                :on-success      [on-success key]
+                :on-failure      [on-failure]}})
