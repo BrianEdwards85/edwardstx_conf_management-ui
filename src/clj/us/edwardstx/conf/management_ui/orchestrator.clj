@@ -38,7 +38,7 @@
   (conf/insert-key (:db o) k))
 
 (defn get-value-id [o data]
-  {:pre [(s/valid? (s/keys :req-un [::key (or ::conf/id ::value)]))]}
+  {:pre [(s/valid? (s/keys :req-un [::key (or ::conf/id ::value)]) data)]}
   (if (:id data)
     (d/chain (conf/get-value-by-id (:db o) (:id data))
              #(if (= (:key data) (:key_path %1))
@@ -58,4 +58,9 @@
                                           {:service (:service data)
                                            :key_path (:key data)
                                            :id %1})
-           ))
+           (fn [_] (get-service-key-values o (:service data)))))
+
+(defn remove-service-key-value [o data]
+  (d/chain
+   (conf/remove-service-key-value (:db o) data)
+   (fn [_] (get-service-key-values o (:service data)))))

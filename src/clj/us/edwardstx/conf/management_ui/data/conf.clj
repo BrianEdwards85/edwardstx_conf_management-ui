@@ -40,19 +40,19 @@
 
 (defn insert-key [db v]
   {:pre [(s/valid? ::db/db db)
-         (s/valid? (s/keys :req-un [::key_path] :opt-un [::secret ::parser]))]}
+         (s/valid? (s/keys :req-un [::key_path] :opt-un [::secret ::parser]) v)]}
   (d/future
     (insert-key-sql (get-connection db) (merge {:secret false :parser nil} v))))
 
 (defn insert-key-value [db kv]
   {:pre [(s/valid? ::db/db db)
-         (s/valid? (s/keys :req-un [::key_path ::id ::conf_value]))]}
+         (s/valid? (s/keys :req-un [::key_path ::id ::conf_value]) kv)]}
   (d/future
     (insert-key-value-sql (get-connection db) kv)))
 
 (defn set-service-key [db skv]
   {:pre [(s/valid? ::db/db db)
-         (s/valid? (s/keys :req-un [::key_path ::id ::service]))]}
+         (s/valid? (s/keys :req-un [::key_path ::id ::service]) skv)]}
   (d/future
     (set-service-key-value-sql (get-connection db) skv)))
 
@@ -61,3 +61,9 @@
          (s/valid? ::specs/uuid id)]}
   (d/future
     (get-value-by-id-sql (get-connection db) {:id id})))
+
+(defn remove-service-key-value [db sk]
+  {:pre [(s/valid? ::db/db db)
+         (s/valid? (s/keys :req-un [::key_path ::service]) skv)]}
+  (d/future
+    (remove-service-key-value-sql (get-connection db) sk)))

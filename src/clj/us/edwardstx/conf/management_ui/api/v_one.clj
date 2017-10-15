@@ -25,6 +25,12 @@
         b (-> ctx :body (assoc :service service))]
     (orchestrator/set-service-key o b)))
 
+(defn remove-service-key-value [o ctx]
+  (let [service (-> ctx :parameters :path :service)
+        b (-> ctx :body (assoc :service service))]
+    (orchestrator/remove-service-key-value o {:service service :key_path b})
+  )
+
 (defn build-v1-routes [o]
   (let [authorized (partial authorized (:keys o))]
     [["keys"
@@ -41,8 +47,9 @@
       (yada/resource {:produces "application/json"
                       :parameters {:path {:service String}}
                       :methods
-                      {:get {:response (authorized (partial get-service-key-values o))
-                             }
+                      {:get {:response (authorized (partial get-service-key-values o))}
+                       :delete {:consumes "text/plain"
+                                :response (authorized (partial remove-service-key-value o))}
                        :post {:consumes "application/json"
                               :response (authorized (partial set-service-key o))}}})]
      [["keys/" :key]

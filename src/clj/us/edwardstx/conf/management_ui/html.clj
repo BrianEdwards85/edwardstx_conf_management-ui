@@ -54,7 +54,7 @@
 (defn build-routes [o]
   ["" [["assets/js/" (yada/as-resource (io/file "target/cljsbuild/public/js"))
         ]
-       ["assets/css/" (yada/as-resource (io/file "resources/public/css/"))]
+       ["assets/" (yada/as-resource (io/file "resources/public/"))]
        [true (yada/resource  {:methods {
                                      :get {
                                            :produces #{"text/html"}

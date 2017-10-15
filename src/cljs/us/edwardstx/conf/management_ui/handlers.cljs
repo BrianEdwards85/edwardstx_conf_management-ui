@@ -33,9 +33,21 @@
             :service-key-edit key)))
 
   (re-frame/reg-event-fx
+   :set-service-key
+   (fn [_ [_ service kv]]
+     (service/set-service-key service kv :get-service-keys-success :get-failure)))
+
+  (re-frame/reg-event-fx
    :get-service-keys
    (fn [_ [_ service]]
      (service/get-service-keys service :get-service-keys-success :get-failure)))
+
+  (re-frame/reg-event-db
+   :end-service-key-edit
+   (fn [db _]
+     (assoc db
+            :key-values nil
+            :service-key-edit nil)))
 
   (re-frame/reg-event-db
    :get-service-keys-success
@@ -75,5 +87,15 @@
    :nav
    (fn [db [_ {:keys [handler route-params]}]]
      (assoc db :page handler :route-params route-params)))
+
+  (re-frame/reg-event-fx
+   :get-keys
+   (fn [_ _]
+     (service/get-keys :get-keys-success :get-failure)))
+
+  (re-frame/reg-event-db
+   :get-keys-success
+   (fn [db [_ r]]
+     (assoc db :keys r)))
 
   )

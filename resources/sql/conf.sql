@@ -47,3 +47,7 @@ ON CONFLICT ON CONSTRAINT conf_service_values_pk DO UPDATE SET value_id = EXCLUD
 SELECT id, key_path
   FROM conf.conf_values
   WHERE conf_values.id = :id
+
+-- :name remove-service-key-value-sql :! :n
+DELETE FROM conf.conf_service_values
+WHERE service = :service AND key_path = :key_path

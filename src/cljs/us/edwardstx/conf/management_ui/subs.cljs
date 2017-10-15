@@ -43,5 +43,10 @@
    (fn [db _]
      (:key-values db)))
 
+  (re-frame/reg-sub
+   :keys
+   (fn [db _]
+     (:keys db)))
+
   )
 
