@@ -31,6 +31,16 @@
                 :on-success      [on-success key]
                 :on-failure      [on-failure]}})
 
+(defn remove-service-key [service kp on-success on-failure]
+    {:http-xhrio {:method          :delete
+                  :uri             (str "/management-ui/api/v1/services/" service)
+                  :body            kp
+                  :response-format json
+                  :format          (ajax/text-request-format)
+                  :headers         {:content-type "text/plain"}
+                  :on-success      [on-success]
+                  :on-failure      [on-failure]}})
+
 (defn set-service-key [service kv on-success on-failure]
   (let [body (.stringify js/JSON (clj->js kv))]
     {:http-xhrio {:method          :post

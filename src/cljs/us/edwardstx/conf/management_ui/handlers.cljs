@@ -33,6 +33,11 @@
             :service-key-edit key)))
 
   (re-frame/reg-event-fx
+   :remove-service-key
+   (fn [_ [_ service kp]]
+     (service/remove-service-key service kp :get-service-keys-success :get-failure)))
+
+  (re-frame/reg-event-fx
    :set-service-key
    (fn [_ [_ service kv]]
      (service/set-service-key service kv :get-service-keys-success :get-failure)))

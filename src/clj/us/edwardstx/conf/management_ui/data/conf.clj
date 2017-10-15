@@ -64,6 +64,6 @@
 
 (defn remove-service-key-value [db sk]
   {:pre [(s/valid? ::db/db db)
-         (s/valid? (s/keys :req-un [::key_path ::service]) skv)]}
+         (s/valid? (s/keys :req-un [::key_path ::service]) sk)]}
   (d/future
     (remove-service-key-value-sql (get-connection db) sk)))

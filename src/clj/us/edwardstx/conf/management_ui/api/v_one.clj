@@ -27,9 +27,11 @@
 
 (defn remove-service-key-value [o ctx]
   (let [service (-> ctx :parameters :path :service)
-        b (-> ctx :body (assoc :service service))]
-    (orchestrator/remove-service-key-value o {:service service :key_path b})
-  )
+        b (-> ctx :body )]
+    (d/chain
+     (orchestrator/remove-service-key-value o {:service service :key_path b})
+     #(assoc (:response ctx) :body (json/write-str %) :status 200)
+     )))
 
 (defn build-v1-routes [o]
   (let [authorized (partial authorized (:keys o))]

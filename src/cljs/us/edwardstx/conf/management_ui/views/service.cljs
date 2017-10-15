@@ -46,7 +46,13 @@
         {:on-double-click #(re-frame/dispatch [:get-key-values (:key_path service-key)])}
         (if (= @service-key-edit (:key_path service-key))
           [conf-key-value service-key service-key-add]
-          (:conf_value service-key))]])))
+          (:conf_value service-key))]
+       [:td [:button.btn.btn-outline-light.btn-sm
+             {:on-click #(re-frame/dispatch [:remove-service-key
+                                             (:service service-key)
+                                             (:key_path service-key)])}
+             [c/glyphicon "remove"]]]
+       ])))
 
 (defn filter-keys [keys service-keys]
   (let [key-set (apply hash-set (map :key_path service-keys))]
