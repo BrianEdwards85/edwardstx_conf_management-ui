@@ -11,7 +11,6 @@
 (defn accountant-configuration [routes]
   {:nav-handler
    (fn [path]
-     (println path)
      (re-frame/dispatch [:nav (bidi/match-route routes path)]))
    :path-exists?
    (fn [path]

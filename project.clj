@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure "1.9.0-beta2"]
                  [org.clojure/spec.alpha "0.1.134"]
                  [org.clojure/data.json "0.2.6"]
-                 [org.clojure/clojurescript "1.9.854"
+                 [org.clojure/clojurescript "1.9.946"
                   :scope "provided"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [org.clojure/tools.logging "0.3.1"]
@@ -25,7 +25,7 @@
                  [com.stuartsierra/component "0.3.2"]
 
                  [hikari-cp "1.7.5"]
-                 [org.postgresql/postgresql "9.4.1208.jre7"]
+                 [org.postgresql/postgresql "42.1.4"]
                  [com.layerware/hugsql "0.4.7"]
 
                  [buddy "1.2.0"]
@@ -38,7 +38,7 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [org.apache.logging.log4j/log4j-core "2.7"]
                  [org.apache.logging.log4j/log4j-slf4j-impl "2.7"]
-                 [org.springframework.amqp/spring-rabbit "2.0.0.M5"
+                 [org.springframework.amqp/spring-rabbit "2.0.0.RELEASE"
                   :exclusions [org.springframework/spring-web org.springframework/spring-tx]]
 
                  [reagent "0.7.0"]
@@ -57,7 +57,7 @@
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
 
-  :repositories [["spring.milestone" "https://repo.spring.io/libs-milestone"]]
+ ;; :repositories [["spring.milestone" "https://repo.spring.io/libs-milestone"]]
 
   :ring {:handler us.edwardstx.conf.management-ui.handler/app
          :uberwar-name "management-ui.war"}
