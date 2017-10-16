@@ -1,4 +1,4 @@
-(ns management-ui.middleware
+(ns us.edwardstx.conf.management-ui.middleware
   (:require [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
 
 (defn wrap-middleware [handler]

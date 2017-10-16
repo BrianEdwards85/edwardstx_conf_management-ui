@@ -57,11 +57,6 @@
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
 
- ;; :repositories [["spring.milestone" "https://repo.spring.io/libs-milestone"]]
-
-  :ring {:handler us.edwardstx.conf.management-ui.handler/app
-         :uberwar-name "management-ui.war"}
-
   :min-lein-version "2.5.0"
 
   :uberjar-name "management-ui.jar"
@@ -75,10 +70,6 @@
 
   :source-paths ["src/clj" "src/cljc"]
   :resource-paths ["resources" "target/cljsbuild"]
-
-  :minify-assets
-  {:assets
-   {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
 
   :cljsbuild
   {:builds {:min
@@ -115,9 +106,6 @@
                       ]
    :css-dirs ["resources/public/css"]
    :ring-handler us.edwardstx.conf.management-ui.handler/app}
-
-;;  :less {:source-paths ["src/less"]
-;;         :target-path "resources/public/css"}
 
   :sass {:src "src/sass"
          :dst "resources/public/css"}

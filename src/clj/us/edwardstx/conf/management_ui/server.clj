@@ -7,7 +7,7 @@
   component/Lifecycle
 
   (start [this]
-    (let [port (-> conf :conf :port)
+    (let [port (or (-> conf :conf :port) 8080)
           routes (-> handler :routes)
           s (yada/listener routes {:port port})]
       (do

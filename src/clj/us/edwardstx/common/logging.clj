@@ -62,6 +62,7 @@
                                  layout            ;;layout
                                  nil               ;;filter
                                  false             ;;ignoreExceptions
+                                 nil               ;;uri
                                  host              ;;host
                                  port              ;;port
                                  nil               ;;addresses
@@ -86,11 +87,12 @@
                                  exchange          ;;exchange
                                  exchangeType      ;;exchangeType
                                  declareExchange   ;;declareExchange
-                                 declareExchange   ;;declareExchange
+                                 durable           ;;durable
                                  autoDelete        ;;autoDelete
                                  contentType       ;;contentType
                                  contentEncoding   ;;contentEncoding
                                  nil               ;;clientConnectionProperties
+                                 true              ;;async
                                  charset           ;;charset
                                  ))
 
@@ -130,7 +132,7 @@
 (defn new-logging []
   (component/using
    (map->Logging {})
-   [conf]))
+   [:conf]))
 
 (comment
   (clojure.tools.logging/info "Hello info")

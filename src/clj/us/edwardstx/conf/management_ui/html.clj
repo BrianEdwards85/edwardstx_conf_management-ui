@@ -1,6 +1,7 @@
 (ns us.edwardstx.conf.management-ui.html
   (:require [hiccup.page :refer [include-js include-css html5]]
             [us.edwardstx.common.security :refer [authorized]]
+            [yada.resources.classpath-resource :refer [new-classpath-resource]]
             [clojure.java.io :as io]
             [yada.yada :as yada]))
 
@@ -17,9 +18,7 @@
      :href "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
      :integrity "sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
      :crossorigin "anonymous"}]
-   (include-css "/management-ui/assets/css/main.css"
-  ;;  (if (env :dev) "/css/site.css" "/css/site.min.css")
-    )])
+   (include-css "/management-ui/assets/css/main.css")])
 
 (defn loading-page [ctx]
   (html5
@@ -52,9 +51,8 @@
                                "https://home.edwardstx.us/management-ui/")}))
 
 (defn build-routes [o]
-  ["" [["assets/js/" (yada/as-resource (io/file "target/cljsbuild/public/js"))
-        ]
-       ["assets/" (yada/as-resource (io/file "resources/public/"))]
+  ["" [
+       ["assets/" (new-classpath-resource "public") ]
        [true (yada/resource  {:methods {
                                      :get {
                                            :produces #{"text/html"}

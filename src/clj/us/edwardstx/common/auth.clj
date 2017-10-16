@@ -12,7 +12,7 @@
 
   (start [this]
     (assoc this :public-key
-           (crypto/private-key-map {:algorithm "ECDSA"
+           (crypto/decode-private-key {:algorithm "ECDSA"
                                     :bytes
                                     (let [url (-> env :auth-host (str "/key"))]
                                       (-> url
