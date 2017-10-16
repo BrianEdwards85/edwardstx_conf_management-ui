@@ -1,4 +1,4 @@
-(ns us.edwardstx.conf.management-ui.server
+(ns us.edwardstx.common.server
   (:require [yada.yada :as yada]
             [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]))
