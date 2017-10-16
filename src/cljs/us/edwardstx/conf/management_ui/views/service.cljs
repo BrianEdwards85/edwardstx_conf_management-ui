@@ -23,19 +23,20 @@
 (defn conf-key-value [service-key service-key-add]
   (let [key-values (re-frame/subscribe [:key-values])]
     [:div.form-inline
-     [:select.form-control  {:value (:id service-key)
-                             :on-change #(let [value (-> % .-target .-value)]
-                                           (if (= value "NEW_VALUE")
-                                             (do
-                                               (re-frame/dispatch [:end-service-key-edit])
-                                               (reset! service-key-add service-key))
-                                             (update-service-key-value service-key {:id value})))}
+     [:select.form-control (assoc (if  (:id service-key) {:value (:id service-key)} {})
+                                  :on-change #(let [value (-> % .-target .-value)]
+                                                (if (= value "NEW_VALUE")
+                                                  (do
+                                                    (re-frame/dispatch [:end-service-key-edit])
+                                                    (reset! service-key-add service-key))
+                                                  (update-service-key-value service-key {:id value}))))
+      (if (not (:id service-key))
+        [:option ""])
       [:option {:value "NEW_VALUE"} "NEW VALUE"]
       (for [key-value @key-values]
         ^{:key (str "SERVICE-KEY-" (:key_path service-key) "-VALUE-" (:id key-value))}
         [:option  {:value (:id key-value)} (:conf_value key-value)])]
-     [:button.btn.btn-outline-light.btn-sm {:on-click #(re-frame/dispatch [:end-service-key-edit])} [c/glyphicon "close"]]]
-    ))
+     [:button.btn.btn-outline-light.btn-sm {:on-click #(re-frame/dispatch [:end-service-key-edit])} [c/glyphicon "close"]]]))
 
 (defn service-key-row [service-key service-key-add]
   (let [service-key-edit (re-frame/subscribe [:service-key-edit])]
