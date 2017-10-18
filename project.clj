@@ -12,7 +12,7 @@
                  [org.clojure/tools.nrepl "0.2.12"]
                  [org.clojure/core.async "0.3.443"]
 
-                 [us.edwardstx/edwardstx_common "1.0.0-SNAPSHOT"]
+                 [us.edwardstx/edwardstx_common "1.0.2-SNAPSHOT"]
 
                  [ring/ring-core "1.6.2"]
                  [ring/ring-defaults "0.3.1"]
