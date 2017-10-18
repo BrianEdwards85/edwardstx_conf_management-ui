@@ -1,9 +1,11 @@
 (ns us.edwardstx.conf.management-ui
   (:require [config.core :refer [env]]
+            [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [manifold.deferred :as d]
             [us.edwardstx.conf.management-ui.orchestrator :refer [new-orchestrator]]
             [us.edwardstx.conf.management-ui.handler :refer [new-handler]]
+            [us.edwardstx.common.logging :refer [new-logging]]
             [us.edwardstx.common.server :refer [new-server]]
             [us.edwardstx.common.conf :refer [new-conf]]
             [us.edwardstx.common.token :refer [new-token]]
@@ -18,6 +20,7 @@
   (component/system-map
    :keys (new-keys env)
    :token (new-token env)
+   :logging (new-logging)
    :conf (new-conf env)
    :db (new-database)
    :orchestrator (new-orchestrator)
@@ -30,9 +33,9 @@
     (reset! system (init-system env))
 
     (swap! system component/start)
-
+    (log/info "Management UI booted")
     (deref semaphore)
-
+    (log/info "Management going down")
     (component/stop @system)
 
     (shutdown-agents)

@@ -10,36 +10,16 @@
                  [org.clojure/clojurescript "1.9.946"
                   :scope "provided"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/core.async "0.3.443"]
 
-                 [aleph "0.4.3"]
-                 [bidi "2.1.2"]
-                 [yada "1.2.9"]
+                 [us.edwardstx/edwardstx_common "1.0.2-SNAPSHOT"]
+
                  [ring/ring-core "1.6.2"]
                  [ring/ring-defaults "0.3.1"]
 
                  [compojure "1.6.0"]
                  [hiccup "1.0.5"]
                  [yogthos/config "0.8"]
-                 [com.stuartsierra/component "0.3.2"]
-
-                 [hikari-cp "1.7.5"]
-                 [org.postgresql/postgresql "42.1.4"]
-                 [com.layerware/hugsql "0.4.7"]
-
-                 [buddy "1.2.0"]
-                 [one-time "0.2.0"]
-                 [clj-crypto "1.0.2"
-                  :exclusions [org.bouncycastle/bcprov-jdk15on bouncycastle/bcprov-jdk16]]
-                 [clj-time "0.11.0"]
-                 [tick "0.3.0"]
-
-                 [org.clojure/tools.logging "0.3.1"]
-                 [org.apache.logging.log4j/log4j-core "2.7"]
-                 [org.apache.logging.log4j/log4j-slf4j-impl "2.7"]
-                 [org.springframework.amqp/spring-rabbit "2.0.0.RELEASE"
-                  :exclusions [org.springframework/spring-web org.springframework/spring-tx]]
 
                  [reagent "0.7.0"]
                  [reagent-utils "0.2.1"]
