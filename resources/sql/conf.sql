@@ -1,4 +1,4 @@
--- src/us/edwardstx/conf/management_ui/data/sql/conf.sql
+-- sql/conf.sql
 
 -- :name get-keys-sql :? :*
 SELECT key_path, secret

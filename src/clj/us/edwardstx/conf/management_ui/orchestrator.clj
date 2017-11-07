@@ -1,12 +1,16 @@
 (ns us.edwardstx.conf.management-ui.orchestrator
   (:require [com.stuartsierra.component :as component]
             [us.edwardstx.conf.management-ui.data.conf :as conf]
+            [us.edwardstx.conf.management-ui.data.services :as services]
+            [clojure.tools.logging :as log]
+            [us.edwardstx.common.keys :as keys]
+            [us.edwardstx.common.tasks :as tasks]
             [us.edwardstx.common.uuid :refer [uuid]]
             [manifold.deferred :as d]
             [clojure.spec.alpha :as s]
             ))
 
-(defrecord Orchestrator [db keys]
+(defrecord Orchestrator [db keys tasks]
   component/Lifecycle
 
   (start [this]
@@ -20,7 +24,7 @@
 (defn new-orchestrator []
   (component/using
    (map->Orchestrator {})
-   [:db :keys]))
+   [:db :keys :tasks]))
 
 (defn get-keys [o]
   (conf/get-keys (:db o)))
@@ -64,3 +68,39 @@
   (d/chain
    (conf/remove-service-key-value (:db o) data)
    (fn [_] (get-service-key-values o (:service data)))))
+
+(defn create-service-accounts [tasks opts]
+  (tasks/send-task-with-response tasks "service-account-creation-service.account.create" opts))
+
+(defn set-credentials [o type opts {:keys [passwd account]}]
+  (if ((set (:types opts)) type)
+    (d/zip
+     (set-service-key o {:service account :value passwd :key (format "%s.password" type)})
+     (set-service-key o {:service account :value account :key (format "%s.username" type)}))
+    (d/success-deferred [])))
+
+(defn insert-service [{:keys [db tasks] :as o} {:keys [service] :as opts}]
+  (let [kp (keys/generate-key-pair)]
+    (d/chain
+     (services/insert-service db service (:public-key kp))
+     (fn [_] (create-service-accounts tasks (assoc opts :account service)))
+     (fn [{:keys [sucess error] :as cred}]
+       (if sucess
+         (d/zip
+          (set-credentials o "db" opts cred)
+          (set-credentials o "rabbit" opts cred))
+         (let [msg (format "Unable to create service accounts for %s: %s" service error)]
+           (log/error msg )
+           (throw (Exception. msg)))))
+     (fn [_]
+       (assoc kp
+              :conf-host "https://eight.edwardstx.us/conf"
+              :auth-host "https://eight.edwardstx.us/auth"
+              :service-name service))
+
+
+    )))
+
+
+
+

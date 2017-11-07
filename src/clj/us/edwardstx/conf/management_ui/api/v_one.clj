@@ -33,18 +33,23 @@
      #(assoc (:response ctx) :body (json/write-str %) :status 200)
      )))
 
+(defn insert-service [o ctx]
+  (->
+   (orchestrator/insert-service o (-> ctx :body ))
+   (d/chain json/write-str)))
+
 (defn build-v1-routes [o]
   (let [authorized (partial authorized (:keys o))]
     [["keys"
-      (yada/resource {:methods
-                      {:get {:produces "application/json"
-                             :response (authorized (partial get-keys o))
-                             }}})]
+      (yada/resource {:produces "application/json"
+                      :methods
+                      {:get {:response (authorized (partial get-keys o))}}})]
      ["services"
-      (yada/resource {:methods
-                      {:get {:produces "application/json"
-                             :response (authorized (partial get-services o))
-                             }}})]
+      (yada/resource {:produces "application/json"
+                      :methods
+                      {:get {:response (authorized (partial get-services o))}
+                       :post {:response (authorized (partial insert-service o))
+                              :consumes "application/json"}}})]
      [["services/" :service]
       (yada/resource {:produces "application/json"
                       :parameters {:path {:service String}}

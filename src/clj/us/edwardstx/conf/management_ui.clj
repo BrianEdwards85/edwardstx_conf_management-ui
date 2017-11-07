@@ -6,7 +6,9 @@
             [us.edwardstx.conf.management-ui.orchestrator :refer [new-orchestrator]]
             [us.edwardstx.conf.management-ui.handler :refer [new-handler]]
             [us.edwardstx.common.logging :refer [new-logging]]
+            [us.edwardstx.common.rabbitmq :refer [new-rabbitmq]]
             [us.edwardstx.common.server :refer [new-server]]
+            [us.edwardstx.common.tasks :refer [new-tasks]]
             [us.edwardstx.common.conf :refer [new-conf]]
             [us.edwardstx.common.token :refer [new-token]]
             [us.edwardstx.common.keys :refer [new-keys]]
@@ -25,6 +27,8 @@
    :db (new-database)
    :orchestrator (new-orchestrator)
    :handler (new-handler)
+   :tasks (new-tasks)
+   :rabbitmq (new-rabbitmq)
    :server (new-server)
    ))
 
